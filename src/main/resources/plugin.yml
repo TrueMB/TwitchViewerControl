@@ -1,0 +1,10 @@
+name: ${project.name}
+author: TrueMB
+version: ${project.version}
+api-version: 1.16
+main: me.truemb.tvc.main.Main
+
+commands:
+   twitchviewercontrol:
+      aliases: tvc
+      description: Plugin management Command

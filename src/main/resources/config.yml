@@ -1,0 +1,72 @@
+Options:
+     Twitch:
+         #Username and the settings
+         JacksonUndercover:
+             IngameName: 'TrueMB'
+             UserId: ''
+             ClientId: ''
+             ClientSecret: ''
+             OAuth: ''
+         #SomeOtherChannelName:
+             #IngameName: 'MrOther'
+             #UserId: ''
+             #ClientId: ''
+             #ClientSecret: ''
+             #OAuth: ''
+     #If OnlyStreamer and Everyone are true, then only "OnlyStreamer" works. 
+     #If OnlyStreamer and Everyone are false, then a random player on the server will get the event.
+     #
+     #Should the events only happen on the Streamer or on the whole server players?
+     OnlyStreamer: true
+     #Should the events happen to everyone on the server?
+     Everyone: false
+     #Should the events only happen on the Streamer or on the whole server players?
+     doRewardAnnouncing: true
+
+Rewards:
+     #Key = RewardName; Rewards exact Name. Can Contain multiple Options.
+     '[MC] Creeper':
+         spawnEntites:
+             1:
+                 #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+                 type: 'CREEPER'
+                 amount: 3
+         items:
+             1:
+                 #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+                 type: 'DIAMOND'
+                 amount: 1
+                 displayName: '&5&lFast Trader'
+     '[MC] Fast Trader':
+         spawnEntites:
+             1:
+                 type: 'VILLAGER'
+                 amount: 1
+                 displayName: '&5&lFast Trader'
+         items:
+             1:
+                 type: 'EMERALD'
+                 amount: 64
+     '[MC] Freeze':
+         effects:
+             1:
+                 #types are listed here on the 'field' value: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+                 type: 'SLOW'
+                 #duration are in seconds
+                 duration: 5
+                 amplifier: 1
+     '[MC] Heal':
+         heal: true
+         feed: true
+
+Permissions:
+     adminCommand: 'tvc.admin'
+
+Messages:
+     prefix: '&7[&6&lTVC&7]&r'
+     noPermission: '&cYou dont have enough Permissions.'
+     help: '&6Please use &f&l/tvc <reload>'
+     rewardAnnouncing: '&6Viewer &f&l%username% &6used &f%reward%&.'
+
+#Do NOT touch
+ConfigVersion: 1
