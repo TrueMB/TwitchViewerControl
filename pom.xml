@@ -20,6 +20,7 @@
 				<includes>
 					<include>plugin.yml</include>
 					<include>config.yml</include>
+					<include>logback.xml</include>
 				</includes>
 			</resource>
 		</resources>
@@ -100,6 +101,16 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>	
+
+		<!-- Maven -->
+	    <repository>
+	        <snapshots>
+	          <enabled>false</enabled>
+	        </snapshots>
+	        <id>central</id>
+	        <name>Maven Repository Switchboard</name>
+	        <url>https://repo1.maven.org/maven2</url>
+	    </repository>
 		
 	</repositories>
 

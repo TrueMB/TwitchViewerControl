@@ -30,11 +30,12 @@ public class EntityInstance {
 	
 	public void spawn(Location loc) {
 		List<Location> locations = Methodes.getCircle(loc, this.amount / 5 + 3, this.amount);
+		
 		for(Location locs : locations) {
-			Entity en = locs.getWorld().spawnEntity(locs, this.type);
-			if(this.displayName != null) {
+			Entity en = locs.getWorld().spawnEntity(locs, type);
+			if(displayName != null) {
 				en.setCustomNameVisible(true);
-				en.setCustomName(this.displayName);
+				en.setCustomName(displayName);
 			}
 		}
 		

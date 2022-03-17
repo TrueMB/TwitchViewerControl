@@ -2,8 +2,6 @@ package me.truemb.tvc.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +9,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.collect.Lists;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
 import com.jeff_media.updatechecker.UserAgentBuilder;
@@ -31,10 +30,11 @@ public class Main extends JavaPlugin {
     
     //NEED TO KNOW
     //Erstellen von Rewards auf Twitch
-    //Plugin needs to be enabled, otherwise nothing happends
+    //Plugin needs to be enabled, otherwise nothing happens
     //Points cant be given back
 
     //TODO https://dev.twitch.tv/docs/api/reference#create-custom-rewards
+    //TODO IGNORE SECTION REWARDS
     
 	public void onEnable() {
 		
@@ -49,7 +49,7 @@ public class Main extends JavaPlugin {
 			new Metrics(this, BSTATS_PLUGIN_ID);
 				
 		//UPDATE CHECKER
-		this.checkForUpdate();
+		//TODO this.checkForUpdate();
 	}
 
 	//CONFIG
@@ -84,15 +84,7 @@ public class Main extends JavaPlugin {
 			if(!this.config.isSet("ConfigVersion") || this.config.getInt("ConfigVersion") < configVersion) {
 				this.getLogger().info("Updating Config!");
 				try {
-					List<String> ignore = new ArrayList<>();
-					
-					ignore.add("Options.categorySettings");
-					ignore.add("Options.maxPossible");
-					
-					ignore.add("GUI.categoryShop.items");
-					ignore.add("GUI.categoryHotel.items");
-					
-					ConfigUpdater.update(this, "config.yml", configFile, ignore);
+					ConfigUpdater.update(this, "config.yml", configFile, Lists.newArrayList("Rewards", "Events"));
 					this.reloadConfig();
 					this.config = new UTF8YamlConfiguration(configFile);
 				} catch (IOException e) {

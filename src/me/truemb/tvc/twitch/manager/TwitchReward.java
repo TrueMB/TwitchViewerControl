@@ -51,12 +51,15 @@ public class TwitchReward {
 					
 					Material type = Material.getMaterial(config.getString("Rewards." + rewardKey + "." + function + "." + itemPath + ".type").toUpperCase());
 					int amount = config.getInt("Rewards." + rewardKey + "." + function + "." + itemPath + ".amount");
-					String displayName = plugin.translateHexColorCodes(config.getString("Rewards." + rewardKey + "." + function + "." + itemPath + ".displayName"));
+					String displayName = config.isSet("Rewards." + rewardKey + "." + function + "." + itemPath + ".displayName") ? plugin.translateHexColorCodes(config.getString("Rewards." + rewardKey + "." + function + "." + itemPath + ".displayName")) : null;
 					
 					ItemStack item = new ItemStack(type, amount);
-					ItemMeta meta = item.getItemMeta();
-					meta.setDisplayName(displayName);
-					item.setItemMeta(meta);
+					
+					if(displayName != null) {
+						ItemMeta meta = item.getItemMeta();
+						meta.setDisplayName(displayName);
+						item.setItemMeta(meta);
+					}
 					
 					this.items.add(item);
 				});
@@ -66,7 +69,7 @@ public class TwitchReward {
 					
 					EntityType type = EntityType.valueOf(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".type").toUpperCase());
 					int amount = config.getInt("Rewards." + rewardKey + "." + function + "." + entityPath + ".amount");
-					String displayName = plugin.translateHexColorCodes(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName"));
+					String displayName = config.isSet("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName") ? plugin.translateHexColorCodes(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName")) : null;
 					
 					this.entities.add(new EntityInstance(type, amount, displayName));
 				});
@@ -92,6 +95,17 @@ public class TwitchReward {
 		//FEED PLAYER
 		if(this.feedPlayer)
 			p.setFoodLevel(20);
+		
+		if(this.items.size() > 0)
+			this.items.forEach(item -> p.getInventory().addItem(item));
+		
+		if(this.effects.size() > 0) {
+			p.addPotionEffects(this.effects);
+		}
+
+		if(this.entities.size() > 0)
+			this.entities.forEach(entityInstance -> entityInstance.spawn(p.getLocation()));
+				
 		
 	}
 }

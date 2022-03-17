@@ -10,7 +10,10 @@ import com.github.twitch4j.chat.events.channel.RaidEvent;
 import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
+import com.github.twitch4j.helix.domain.User;
+import com.github.twitch4j.helix.domain.UserList;
 import com.github.twitch4j.pubsub.events.ChannelPointsRedemptionEvent;
+import com.google.common.collect.Lists;
 
 import me.truemb.tvc.main.Main;
 import me.truemb.tvc.twitch.listener.TwitchListener;
@@ -19,17 +22,18 @@ public class TwitchChannel {
 	
 	private String channelName;
 	private String ingameName;
+	private String userId;
 	
 	private TwitchClientPool twitchClient;
 	
-	public TwitchChannel(Main plugin, TwitchListener listener, String channelName, String ingameName, String clientId, String clientSecret, String authToken, String userId) {
+	public TwitchChannel(Main plugin, TwitchListener listener, String channelName, String ingameName, String clientId, String clientSecret, String authToken) {
 		this.channelName = channelName;
 		this.ingameName = ingameName;
 		
-		this.twitchClient = this.buildClient(plugin, listener, clientId, clientSecret, authToken, userId);
+		this.twitchClient = this.buildClient(plugin, listener, clientId, clientSecret, authToken);
 	}
 
-	private TwitchClientPool buildClient(Main plugin, TwitchListener listener, String clientId, String clientSecret, String authToken, String userId) {
+	private TwitchClientPool buildClient(Main plugin, TwitchListener listener, String clientId, String clientSecret, String authToken) {
 
 		OAuth2Credential credentials = new OAuth2Credential("twitch", authToken);
 		
@@ -39,7 +43,6 @@ public class TwitchChannel {
 	            .withChatAccount(credentials)
 			    .withEnableChat(true)
 			    .withEnableHelix(true)
-	            .withEnableGraphQL(true)
 				.withEnablePubSub(true)
 			    .withDefaultEventHandler(ReactorEventHandler.class)
 			    .build();
@@ -47,12 +50,18 @@ public class TwitchChannel {
 		client.getClientHelper().enableStreamEventListener(this.channelName);
 		client.getClientHelper().enableFollowEventListener(this.channelName);
 		
-		client.getChat().joinChannel(this.channelName);
+		//client.getChat().joinChannel(this.channelName);
 
-		
-		client.getPubSub().listenForFollowingEvents(credentials, userId);
-		client.getPubSub().listenForRaidEvents(credentials, userId);
-		client.getPubSub().listenForChannelPointsRedemptionEvents(credentials, userId);
+		UserList list = client.getHelix().getUsers(authToken, null, Lists.newArrayList(this.channelName)).execute();
+		if(list.getUsers().size() > 0) {
+			User user = list.getUsers().get(0);
+			this.userId = user.getId();
+			
+			client.getPubSub().listenForFollowingEvents(credentials, this.userId);
+			client.getPubSub().listenForRaidEvents(credentials, this.userId);
+			client.getPubSub().listenForChannelPointsRedemptionEvents(credentials, this.userId);
+		}else
+			plugin.getLogger().warning("Could load UserID of Channel: " + this.channelName);
 		
 		client.getEventManager().onEvent(ChannelGoLiveEvent.class, event -> listener.onLiveStream(event));
 		client.getEventManager().onEvent(ChannelGoOfflineEvent.class, event -> listener.onOfflineStream(event));
@@ -77,6 +86,10 @@ public class TwitchChannel {
 	
 	public String getIngameName() {
 		return this.ingameName;
+	}
+	
+	public String getUserId() {
+		return this.userId;
 	}
 
 }

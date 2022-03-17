@@ -3,7 +3,6 @@ Options:
          #Username and the settings
          JacksonUndercover:
              IngameName: 'TrueMB'
-             UserId: ''
              ClientId: ''
              ClientSecret: ''
              OAuth: ''
@@ -20,24 +19,96 @@ Options:
      OnlyStreamer: true
      #Should the events happen to everyone on the server?
      Everyone: false
-     #Should the events only happen on the Streamer or on the whole server players?
-     doRewardAnnouncing: true
+     #Should the events be announced on the Server?
+     Announcing: 
+         Reward: true
+         Follow: true
+         Subscription: true
+         Raid: true
+     #Shows some more Informations in the log
+     EnableDebug: false
 
+Events:
+     ChannelPoints:
+          #Key = Channel Points Redemption Name (Rewards exact Name); Value is the Reward
+          '[MC] Creeper': 'Creeper'
+          '[MC] Freeze': 'Freeze'
+          '[MC] Heal': 'Heal'
+          '[MC] Speed Run': 'Speed Run'
+          '[MC] Wither': 'Wither'
+          '[MC] Fast Trader': 'Fast Trader'
+     Subscription: 'Creeper'
+     GiftedSubscription: 'Creeper'
+     Follow: 'Heal'
+     Raid: 'Wither'
+	 
 Rewards:
-     #Key = RewardName; Rewards exact Name. Can Contain multiple Options.
-     '[MC] Creeper':
+     #Key = RewardName; Can Contain multiple Options.
+     'Creeper':
          spawnEntites:
              1:
                  #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
                  type: 'CREEPER'
-                 amount: 3
+                 amount: 6
          items:
              1:
                  #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
                  type: 'DIAMOND'
                  amount: 1
-                 displayName: '&5&lFast Trader'
-     '[MC] Fast Trader':
+                 displayName: '&5&lBling Bling Diamond'
+     'Freeze':
+         effects:
+             1:
+                 #types are listed here on the 'field' value: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+                 type: 'SLOW'
+                 #duration are in seconds
+                 duration: 5
+                 amplifier: 1
+     'Heal':
+         heal: true
+         feed: true
+     'Speed Run':
+         spawnEntites:
+             1:
+                 type: 'ENDER_DRAGON'
+                 amount: 1
+             2:
+                 type: 'ENDERMAN'
+                 amount: 5
+         items:
+             1:
+                 type: 'DIAMOND_HELMET'
+                 amount: 1
+             2:
+                 type: 'DIAMOND_CHESTPLATE'
+                 amount: 1
+             3:
+                 type: 'DIAMOND_LEGGINGS'
+                 amount: 1
+             4:
+                 type: 'DIAMOND_BOOTS'
+                 amount: 1
+             5:
+                 type: 'DIAMOND_SWORD'
+                 amount: 1
+             6:
+                 type: 'GOLDEN_APPLE'
+                 amount: 64
+     'Wither':
+         spawnEntites:
+             1:
+                 type: 'WITHER'
+                 amount: 1
+             2:
+                 type: 'WITHER_SKELETON'
+                 amount: 8
+         effects:
+             1:
+                 type: 'WITHER'
+                 duration: 300
+                 amplifier: 0
+         feed: true
+     'Fast Trader':
          spawnEntites:
              1:
                  type: 'VILLAGER'
@@ -47,17 +118,6 @@ Rewards:
              1:
                  type: 'EMERALD'
                  amount: 64
-     '[MC] Freeze':
-         effects:
-             1:
-                 #types are listed here on the 'field' value: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
-                 type: 'SLOW'
-                 #duration are in seconds
-                 duration: 5
-                 amplifier: 1
-     '[MC] Heal':
-         heal: true
-         feed: true
 
 Permissions:
      adminCommand: 'tvc.admin'
@@ -66,7 +126,11 @@ Messages:
      prefix: '&7[&6&lTVC&7]&r'
      noPermission: '&cYou dont have enough Permissions.'
      help: '&6Please use &f&l/tvc <reload>'
-     rewardAnnouncing: '&6Viewer &f&l%username% &6used &f%reward%&.'
+     rewardAnnouncing: '&6Viewer &f&l%username% &6used Reward &f%reward%&6.'
+     followAnnouncing: '&6Viewer &f&l%username% &6has followed the Stream.'
+     subscribedAnnouncing: '&6Viewer &f&l%username% &6is now subscribing with a &fTier %tier% &6Sub.'
+     subscriptionGiftAnnouncing: '&6Viewer &f&l%gifter% &6has gifted a &fTier %tier% &6Sub to &f&l%username%&6.'
+     raidAnnouncing: '&6Streamer &f&l%username% &6raided the Stream!'
 
 #Do NOT touch
 ConfigVersion: 1
