@@ -25,17 +25,24 @@ public class TwitchChannel {
 	private String userId;
 	
 	private TwitchClientPool twitchClient;
+	private String authKey;
 	
 	public TwitchChannel(Main plugin, TwitchListener listener, String channelName, String ingameName, String clientId, String clientSecret, String authToken) {
 		this.channelName = channelName;
 		this.ingameName = ingameName;
+		this.authKey = authToken;
 		
-		this.twitchClient = this.buildClient(plugin, listener, clientId, clientSecret, authToken);
+		this.twitchClient = this.buildClient(plugin, listener, clientId, clientSecret);
 	}
 
-	private TwitchClientPool buildClient(Main plugin, TwitchListener listener, String clientId, String clientSecret, String authToken) {
+	private TwitchClientPool buildClient(Main plugin, TwitchListener listener, String clientId, String clientSecret) {
 
-		OAuth2Credential credentials = new OAuth2Credential("twitch", authToken);
+		if(clientId == null || clientId.equals("") || clientSecret == null || clientSecret.equals("") || this.authKey == null || this.authKey.equals("")) {
+			plugin.getLogger().warning("Please configurate your Twitch Connection in the config.");
+			return null;
+		}
+		
+		OAuth2Credential credentials = new OAuth2Credential("twitch", this.authKey);
 		
 		TwitchClientPool client = TwitchClientPoolBuilder.builder()
 			    .withClientId(clientId)
@@ -52,7 +59,7 @@ public class TwitchChannel {
 		
 		//client.getChat().joinChannel(this.channelName);
 
-		UserList list = client.getHelix().getUsers(authToken, null, Lists.newArrayList(this.channelName)).execute();
+		UserList list = client.getHelix().getUsers(this.authKey, null, Lists.newArrayList(this.channelName)).execute();
 		if(list.getUsers().size() > 0) {
 			User user = list.getUsers().get(0);
 			this.userId = user.getId();
@@ -90,6 +97,10 @@ public class TwitchChannel {
 	
 	public String getUserId() {
 		return this.userId;
+	}
+	
+	public String getAuthKey() {
+		return this.authKey;
 	}
 
 }

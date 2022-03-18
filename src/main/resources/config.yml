@@ -29,19 +29,32 @@ Options:
      EnableDebug: false
 
 Events:
-     ChannelPoints:
-          #Key = Channel Points Redemption Name (Rewards exact Name); Value is the Reward
-          '[MC] Creeper': 'Creeper'
-          '[MC] Freeze': 'Freeze'
-          '[MC] Heal': 'Heal'
-          '[MC] Speed Run': 'Speed Run'
-          '[MC] Wither': 'Wither'
-          '[MC] Fast Trader': 'Fast Trader'
+     ChannelRewards:
+         #Key = Channel Points Redemption Name (Rewards exact Name); Value is the Reward
+         '[MC] Creeper':
+             Reward: 'Creeper'
+             #Only Needed, if you want to let the plugin create the Channel Points Reward
+             ChannelPoints: 5000
+         '[MC] Freeze':
+             Reward: 'Freeze'
+             ChannelPoints: 3000
+         '[MC] Heal':
+             Reward: 'Heal'
+             ChannelPoints: 2000
+         '[MC] Fast Trader':
+             Reward: 'Fast Trader'
+             ChannelPoints: 3000
+         '[MC] Speed Run':
+             Reward: 'Speed Run'
+             ChannelPoints: 20000
+         '[MC] Wither':
+             Reward: 'Wither'
+             ChannelPoints: 20000
      Subscription: 'Creeper'
      GiftedSubscription: 'Creeper'
      Follow: 'Heal'
      Raid: 'Wither'
-	 
+
 Rewards:
      #Key = RewardName; Can Contain multiple Options.
      'Creeper':
@@ -50,6 +63,12 @@ Rewards:
                  #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
                  type: 'CREEPER'
                  amount: 6
+             2:
+                 #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+                 type: 'CREEPER'
+                 amount: 1
+                 #Spawn on the players location. Othwise it would be around the player
+                 exactLocation: true
          items:
              1:
                  #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
@@ -125,8 +144,11 @@ Permissions:
 Messages:
      prefix: '&7[&6&lTVC&7]&r'
      noPermission: '&cYou dont have enough Permissions.'
-     help: '&6Please use &f&l/tvc <reload>'
-     reloaded: '&f&lTVC &awas successfully reloaded.'
+     configChannelMissing: '&cCouldnt find Channel in the config.'
+     couldntCreateChannelRewards: '&cThere was an Issue while creating the Channel Rewards.'
+     help: '&6Please use &f/tvc reload &6or &f/tvc setupRewards <ChannelName>'
+     reloaded: '&awas successfully reloaded.'
+     channelRewardsCreated: '&aSuccessfully created Channel Rewards.'
      rewardAnnouncing: '&6Viewer &f&l%username% &6used Reward &f%reward%&6.'
      followAnnouncing: '&6Viewer &f&l%username% &6has followed the Stream.'
      subscribedAnnouncing: '&6Viewer &f&l%username% &6is now subscribing with a &fTier %tier% &6Sub.'

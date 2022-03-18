@@ -46,8 +46,12 @@ public class TwitchMain {
 	 * @param userId
 	 * @return TwitchChannel instance of the userId
 	 */
-	public Optional<TwitchChannel> getTwitchChannel(String userId) {
+	public Optional<TwitchChannel> getTwitchChannelById(String userId) {
 		return this.twitchChannels.stream().filter(channel -> channel.getUserId() != null && channel.getUserId().equalsIgnoreCase(userId)).findAny();
+	}
+	
+	public Optional<TwitchChannel> getTwitchChannelByName(String channelName) {
+		return this.twitchChannels.stream().filter(channel -> channel.getChannelName() != null && channel.getUserId().equalsIgnoreCase(channelName)).findAny();
 	}
 	
 	public void disableClients() {

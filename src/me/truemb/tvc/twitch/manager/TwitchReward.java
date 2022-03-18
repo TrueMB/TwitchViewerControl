@@ -70,8 +70,9 @@ public class TwitchReward {
 					EntityType type = EntityType.valueOf(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".type").toUpperCase());
 					int amount = config.getInt("Rewards." + rewardKey + "." + function + "." + entityPath + ".amount");
 					String displayName = config.isSet("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName") ? plugin.translateHexColorCodes(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName")) : null;
+					boolean exactLocation = config.getBoolean("Rewards." + rewardKey + "." + function + "." + entityPath + ".exactLocation");
 					
-					this.entities.add(new EntityInstance(type, amount, displayName));
+					this.entities.add(new EntityInstance(type, amount, displayName, exactLocation));
 				});
 				
 			}else

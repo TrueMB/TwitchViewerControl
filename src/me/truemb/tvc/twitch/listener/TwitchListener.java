@@ -164,7 +164,7 @@ public class TwitchListener{
 		ChannelPointsUser user = redemption.getUser();
 		String channelId = reward.getChannelId();
 		
-		Optional<TwitchChannel> optionalChannel = this.instance.getTwitch().getTwitchChannel(channelId);
+		Optional<TwitchChannel> optionalChannel = this.instance.getTwitch().getTwitchChannelById(channelId);
 		if(optionalChannel.isEmpty()) {
 			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
 				this.instance.getLogger().warning("Couldn't find the Reward: '" + title + "' in the Config/Cache.");
@@ -174,7 +174,7 @@ public class TwitchListener{
 		TwitchChannel channel = optionalChannel.get();
 		String channelName = channel.getChannelName();
 		
-		TwitchReward twitchReward = this.instance.getTwitch().getReward(this.instance.manageFile().getString("Events.ChannelPoints." + title));
+		TwitchReward twitchReward = this.instance.getTwitch().getReward(this.instance.manageFile().getString("Events.ChannelRewards." + title + ".Reward"));
 		
 		if(twitchReward == null) {
 			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
