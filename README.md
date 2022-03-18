@@ -33,6 +33,10 @@ Currently there are following Minecraft Events:
 ![Creeper](https://i.ibb.co/dBtkn26/Creeper.png)
 ![Effect](https://i.ibb.co/QnbF5qc/Effect.png)
 
+# Things you should know:
+- Plugin needs to be running, to read the Twitch Events.
+- Either my plugin or the Streamer (you) can give back Channel Points, if something went wrong.
+
 # How to setup:
 As the first thing, we need to create an app on Twitch.
 
