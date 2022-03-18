@@ -27,20 +27,13 @@ public class Main extends JavaPlugin {
 	private static final int configVersion = 1;
     private static final String SPIGOT_RESOURCE_ID = ""; //TODO
     private static final int BSTATS_PLUGIN_ID = 14642;
-    
-    //NEED TO KNOW
-    //Erstellen von Rewards auf Twitch
-    //Plugin needs to be enabled, otherwise nothing happens
-    //Points cant be given back
 
     //TODO https://dev.twitch.tv/docs/api/reference#create-custom-rewards
-    //TODO IGNORE SECTION REWARDS
     
 	public void onEnable() {
 		
-		this.manageFile();
-		this.twitchMainInstance = new TwitchMain(this);
-
+		this.enablePlugin();
+		
 		//COMMANDS
 		this.getCommand("twitchviewercontrol").setExecutor(new TwitchViewerControlCOMMAND(this));
 		
@@ -50,6 +43,23 @@ public class Main extends JavaPlugin {
 				
 		//UPDATE CHECKER
 		//TODO this.checkForUpdate();
+	}
+	
+	@Override
+	public void onDisable() {
+		this.disablePlugin();
+	}
+
+	public void enablePlugin() {
+		this.manageFile();
+		this.twitchMainInstance = new TwitchMain(this);
+	}
+	
+	public void disablePlugin() {
+		this.config = null;
+		
+		if(this.twitchMainInstance != null)
+			this.twitchMainInstance.disableClients();
 	}
 
 	//CONFIG
@@ -84,7 +94,7 @@ public class Main extends JavaPlugin {
 			if(!this.config.isSet("ConfigVersion") || this.config.getInt("ConfigVersion") < configVersion) {
 				this.getLogger().info("Updating Config!");
 				try {
-					ConfigUpdater.update(this, "config.yml", configFile, Lists.newArrayList("Rewards", "Events"));
+					ConfigUpdater.update(this, "config.yml", configFile, Lists.newArrayList("Rewards", "Events", "Options.Twitch"));
 					this.reloadConfig();
 					this.config = new UTF8YamlConfiguration(configFile);
 				} catch (IOException e) {

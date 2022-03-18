@@ -1,16 +1,24 @@
 package me.truemb.tvc.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
 import me.truemb.tvc.main.Main;
 
-public class TwitchViewerControlCOMMAND implements CommandExecutor {
+public class TwitchViewerControlCOMMAND implements CommandExecutor, TabCompleter {
 	
 	private Main instance;
+	private List<String> subCommands = new ArrayList<>();
 	
 	public TwitchViewerControlCOMMAND(Main plugin) {
 		this.instance = plugin;
+		
+		this.subCommands.add("reload");
 	}
 	
 	@Override
@@ -23,12 +31,26 @@ public class TwitchViewerControlCOMMAND implements CommandExecutor {
 				return true;
 			}
 			
+			this.instance.disablePlugin();
+			this.instance.enablePlugin();
 			
-			
+			sender.sendMessage(this.instance.getMessage("reloaded"));
 			return true;
 		}else {
 			sender.sendMessage(this.instance.getMessage("help"));
 			return true;
 		}
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+
+		List<String> result = new ArrayList<>();
+
+		if(args.length == 1)
+			for(String subCMD : this.subCommands)
+				if(subCMD.toLowerCase().startsWith(args[0].toLowerCase()))
+					result.add(subCMD);
+		return result;
 	}
 }

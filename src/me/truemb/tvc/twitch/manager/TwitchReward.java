@@ -64,7 +64,7 @@ public class TwitchReward {
 					this.items.add(item);
 				});
 				
-			}else if(function.equalsIgnoreCase("spawnEntites")) {
+			}else if(function.equalsIgnoreCase("spawnEntities")) {
 				config.getConfigurationSection("Rewards." + rewardKey + "." + function).getKeys(false).forEach(entityPath -> {
 					
 					EntityType type = EntityType.valueOf(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".type").toUpperCase());

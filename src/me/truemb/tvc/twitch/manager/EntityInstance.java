@@ -33,9 +33,9 @@ public class EntityInstance {
 		
 		for(Location locs : locations) {
 			Entity en = locs.getWorld().spawnEntity(locs, type);
-			if(displayName != null) {
+			if(this.displayName != null) {
 				en.setCustomNameVisible(true);
-				en.setCustomName(displayName);
+				en.setCustomName(this.displayName);
 			}
 		}
 		

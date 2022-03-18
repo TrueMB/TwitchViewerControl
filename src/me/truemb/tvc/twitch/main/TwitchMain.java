@@ -49,5 +49,11 @@ public class TwitchMain {
 	public Optional<TwitchChannel> getTwitchChannel(String userId) {
 		return this.twitchChannels.stream().filter(channel -> channel.getUserId() != null && channel.getUserId().equalsIgnoreCase(userId)).findAny();
 	}
+	
+	public void disableClients() {
+		this.twitchChannels.forEach(channel -> {
+			channel.getTwitchClient().close();
+		});
+	}
 
 }
