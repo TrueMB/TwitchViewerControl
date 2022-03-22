@@ -78,6 +78,7 @@ public class TwitchViewerControlCOMMAND implements CommandExecutor, TabCompleter
 			
 			CustomReward reward = CustomReward.builder()
 					.title(title)
+					.shouldRedemptionsSkipRequestQueue(true)
 					.cost(this.instance.manageFile().getInt("Events.ChannelRewards." + title + ".ChannelPoints"))
 					.build();
 			

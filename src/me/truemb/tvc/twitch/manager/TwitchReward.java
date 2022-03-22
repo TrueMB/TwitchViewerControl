@@ -101,7 +101,15 @@ public class TwitchReward {
 			this.items.forEach(item -> p.getInventory().addItem(item));
 		
 		if(this.effects.size() > 0) {
-			p.addPotionEffects(this.effects);
+			this.effects.forEach(potionEffect -> {
+				PotionEffect current = p.getPotionEffect(potionEffect.getType());
+				if(current == null || current.getAmplifier() < potionEffect.getAmplifier())
+					p.addPotionEffect(potionEffect);
+				else {
+					p.addPotionEffect(new PotionEffect(potionEffect.getType(), potionEffect.getDuration() + current.getDuration(), potionEffect.getAmplifier() > current.getAmplifier() ? potionEffect.getAmplifier() : current.getAmplifier()));
+				}
+				
+			}); 
 		}
 
 		if(this.entities.size() > 0)

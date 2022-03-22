@@ -56,8 +56,19 @@ public class TwitchMain {
 	
 	public void disableClients() {
 		this.twitchChannels.forEach(channel -> {
-			channel.getTwitchClient().close();
+			if(channel.getTwitchClient() != null)
+				channel.getTwitchClient().close();
 		});
+	}
+	
+	/**
+	 * Needed for Plugin disable
+	 */
+	public void disableClientsSync() {
+		for(TwitchChannel channel : this.twitchChannels) {
+			if(channel.getTwitchClient() != null)
+				channel.getTwitchClient().close();
+		};
 	}
 
 }

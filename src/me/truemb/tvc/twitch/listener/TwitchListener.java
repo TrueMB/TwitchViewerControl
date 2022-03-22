@@ -167,7 +167,7 @@ public class TwitchListener{
 		Optional<TwitchChannel> optionalChannel = this.instance.getTwitch().getTwitchChannelById(channelId);
 		if(optionalChannel.isEmpty()) {
 			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
-				this.instance.getLogger().warning("Couldn't find the Reward: '" + title + "' in the Config/Cache.");
+				this.instance.getLogger().warning("Couldn't find the UserId '" + channelId + "'.");
 			return;
 		}
 		
@@ -223,7 +223,7 @@ public class TwitchListener{
 		if(onlyStreamer)
 			for(String channelNames : this.instance.manageFile().getConfigurationSection("Options.Twitch").getKeys(false))
 				if(channelNames.equalsIgnoreCase(channelName)) {
-					String ingameName = this.instance.manageFile().getString("Options.Twitch.IngameName");
+					String ingameName = this.instance.manageFile().getString("Options.Twitch." + channelNames + ".IngameName");
 					return Bukkit.getOnlinePlayers().stream().filter(t -> t.getName().equalsIgnoreCase(ingameName)).collect(Collectors.toList());
 				}
 		

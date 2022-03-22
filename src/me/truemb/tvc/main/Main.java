@@ -27,8 +27,6 @@ public class Main extends JavaPlugin {
 	private static final int configVersion = 1;
     private static final String SPIGOT_RESOURCE_ID = ""; //TODO
     private static final int BSTATS_PLUGIN_ID = 14642;
-
-    //TODO https://dev.twitch.tv/docs/api/reference#create-custom-rewards
     
 	public void onEnable() {
 		
@@ -59,7 +57,7 @@ public class Main extends JavaPlugin {
 		this.config = null;
 		
 		if(this.twitchMainInstance != null)
-			this.twitchMainInstance.disableClients();
+			this.twitchMainInstance.disableClientsSync();
 	}
 
 	//CONFIG

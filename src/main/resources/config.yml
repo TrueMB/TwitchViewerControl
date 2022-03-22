@@ -65,7 +65,7 @@ Rewards:
                  amount: 6
              2:
                  #types are listed here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
-                 type: 'CREEPER'
+                 type: 'PRIMED_TNT'
                  amount: 1
                  #Spawn on the players location. Othwise it would be around the player
                  exactLocation: true
