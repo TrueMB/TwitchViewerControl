@@ -23,8 +23,17 @@ They contain always a Reward group, which is going to be triggert.
 The **Reward** groups contains all the Stuff, that is going to be happening ingame.
 Currently there are following Minecraft Events:
 - spawnEntities - Can contain multiple Entities, which will be spawned.
+  - type: ![Entity Type](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html)
+  - amount: how many should be spawned
+  - exactLocation: Should the Entity spawn on the Player Position.
 - items - Can contain multiple Items, which the Player will gain.
+  - type: ![Material Type](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html)
+  - amount: How many items should be added
+  - displayName: A Custom Name
 - effects - Can contain multiple PotionEffects for a Player. Stackable, if multiple times triggert.
+  - type: ![Potion Type](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html)
+  - duration: The Duration of the effect
+  - amplifier: How strong the effect should be
 - heal - Heals the player
 - feed - Feeds the player
 
@@ -33,9 +42,14 @@ Currently there are following Minecraft Events:
 ![Creeper](https://i.ibb.co/dBtkn26/Creeper.png)
 ![Effect](https://i.ibb.co/QnbF5qc/Effect.png)
 
+# Commands:
+- /TVC reload - Reloads the Config and the Twitch Connections
+- /TVC setupRewards <Twitch Channel> - Creates the ChannelPoints with the config given Coins Amount without accepts through the Mod/Streamer. (They still can be edited) An Admin or the Ingamename in the Config can use the command.
+
 # Things you should know:
 - Plugin needs to be running, to read the Twitch Events.
 - Either my plugin or the Streamer (you) can give back Channel Points, if something went wrong.
+- This plugin should not run on public online-mode false servers for your own safety.
 
 # How to setup:
 As the first thing, we need to create an app on Twitch.
