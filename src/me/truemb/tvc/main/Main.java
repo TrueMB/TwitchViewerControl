@@ -25,7 +25,7 @@ public class Main extends JavaPlugin {
 	private TwitchMain twitchMainInstance;
 	
 	private static final int configVersion = 1;
-    private static final String SPIGOT_RESOURCE_ID = ""; //TODO
+    private static final String SPIGOT_RESOURCE_ID = "100882";
     private static final int BSTATS_PLUGIN_ID = 14642;
     
 	public void onEnable() {
@@ -40,7 +40,7 @@ public class Main extends JavaPlugin {
 			new Metrics(this, BSTATS_PLUGIN_ID);
 				
 		//UPDATE CHECKER
-		//TODO this.checkForUpdate();
+		this.checkForUpdate();
 	}
 	
 	@Override
