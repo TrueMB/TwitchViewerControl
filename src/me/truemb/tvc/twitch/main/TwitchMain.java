@@ -60,15 +60,5 @@ public class TwitchMain {
 				channel.getTwitchClient().close();
 		});
 	}
-	
-	/**
-	 * Needed for Plugin disable
-	 */
-	public void disableClientsSync() {
-		for(TwitchChannel channel : this.twitchChannels) {
-			if(channel.getTwitchClient() != null)
-				channel.getTwitchClient().close();
-		};
-	}
 
 }

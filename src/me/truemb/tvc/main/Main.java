@@ -57,7 +57,7 @@ public class Main extends JavaPlugin {
 		this.config = null;
 		
 		if(this.twitchMainInstance != null)
-			this.twitchMainInstance.disableClientsSync();
+			this.twitchMainInstance.disableClients();
 	}
 
 	//CONFIG
