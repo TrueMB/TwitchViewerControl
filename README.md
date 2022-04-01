@@ -77,6 +77,8 @@ Currently following Options are needed for full function:
 - channel:read:subscriptions
 - channel:manage:predictions
 - channel:read:predictions
+- channel:manage:redemptions
+- channel:read:redemptions
 
 Quick Link with the settings: https://twitchtokengenerator.com/quick/cy9uJ5yT7S
 
