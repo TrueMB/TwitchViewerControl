@@ -75,6 +75,9 @@ Rewards:
                  type: 'DIAMOND'
                  amount: 1
                  displayName: '&5&lBling Bling Diamond'
+         commands:
+            - 'give %player% DIAMOND 1'
+            - 'msg %player% &6Viewer &f%Viewer% &6says he likes you!'
      'Freeze':
          effects:
              1:

@@ -2,7 +2,10 @@ package me.truemb.tvc.twitch.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -21,6 +24,8 @@ public class TwitchReward {
 	private Collection<PotionEffect> effects = new ArrayList<PotionEffect>();
 	private Collection<EntityInstance> entities = new ArrayList<EntityInstance>();
 	
+	private List<String> commands = Collections.emptyList();
+	
 	private boolean healPlayer;
 	private boolean feedPlayer;
 
@@ -29,12 +34,15 @@ public class TwitchReward {
 		
 		config.getConfigurationSection("Rewards." + rewardKey).getKeys(false).forEach(function -> {
 			
+			//CACHE IF PLAYER SHOULD BE HEALED
 			if(function.equalsIgnoreCase("heal"))
 				this.healPlayer = config.getBoolean("Rewards." + rewardKey + "." + function);
 			
+			//CACHE IF PLAYER SHOULD BE FED
 			else if(function.equalsIgnoreCase("feed"))
 				this.feedPlayer = config.getBoolean("Rewards." + rewardKey + "." + function);
 			
+			//CACHE EFFECTS
 			else if(function.equalsIgnoreCase("effects")) {
 				config.getConfigurationSection("Rewards." + rewardKey + "." + function).getKeys(false).forEach(effectPath -> {
 					
@@ -46,6 +54,7 @@ public class TwitchReward {
 					this.effects.add(effect);
 				});
 				
+			//CACHE ITEM REWARDS
 			}else if(function.equalsIgnoreCase("items")) {
 				config.getConfigurationSection("Rewards." + rewardKey + "." + function).getKeys(false).forEach(itemPath -> {
 					
@@ -63,7 +72,8 @@ public class TwitchReward {
 					
 					this.items.add(item);
 				});
-				
+			
+			//CACHE THE SPAWN OF ENTITIES
 			}else if(function.equalsIgnoreCase("spawnEntities")) {
 				config.getConfigurationSection("Rewards." + rewardKey + "." + function).getKeys(false).forEach(entityPath -> {
 					
@@ -74,7 +84,11 @@ public class TwitchReward {
 					
 					this.entities.add(new EntityInstance(type, amount, displayName, exactLocation));
 				});
-				
+			
+			//CACHE ALL COMMANDS
+			}else if(function.equalsIgnoreCase("commands")) {
+				this.commands = config.getStringList("Rewards." + rewardKey + "." + function);
+			
 			}else
 				plugin.getLogger().warning("I am not sure what to do with following Reward Option: '" + "Rewards." + rewardKey + "." + function + "'. Is it a valid Value?");
 			
@@ -87,7 +101,7 @@ public class TwitchReward {
 	 * 
 	 * @param Target Player
 	 */
-	public void send(Player p) {
+	public void send(Player p, String viewer) {
 		
 		//HEAL PLAYER
 		if(this.healPlayer)
@@ -114,7 +128,13 @@ public class TwitchReward {
 
 		if(this.entities.size() > 0)
 			this.entities.forEach(entityInstance -> entityInstance.spawn(p.getLocation()));
-				
-		
+
+		if(this.commands.size() > 0)
+			this.commands.forEach(command -> {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
+						.replaceAll("(?i)%" + "player" + "%", p.getName())
+						.replaceAll("(?i)%" + "viewer" + "%", viewer)
+						);
+			});
 	}
 }

@@ -75,7 +75,7 @@ public class TwitchListener{
 			@Override
 			public void run() {
 				for(Player p : all)
-					twitchReward.send(p);
+					twitchReward.send(p, user.getName());
 			}
 		});
 	}
@@ -110,7 +110,7 @@ public class TwitchListener{
 			@Override
 			public void run() {
 				for(Player p : all)
-					twitchReward.send(p);
+					twitchReward.send(p, user.getName());
 			}
 		});
 	}
@@ -151,7 +151,7 @@ public class TwitchListener{
 			@Override
 			public void run() {
 				for(Player p : all)
-					twitchReward.send(p);
+					twitchReward.send(p, user.getName());
 			}
 		});
 	}
@@ -199,7 +199,7 @@ public class TwitchListener{
 			@Override
 			public void run() {
 				for(Player p : all)
-					twitchReward.send(p);
+					twitchReward.send(p, user.getDisplayName());
 			}
 		});
 	}
