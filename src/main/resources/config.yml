@@ -19,10 +19,13 @@ Options:
      OnlyStreamer: true
      #Should the events happen to everyone on the server?
      Everyone: false
+     #Gifted Subs only triggers once. The amount doesn't matter. Should they also trigger the Subs Event?
+     GiftedSubsCountAsSubs: false
      #Should the events be announced on the Server?
      Announcing: 
          Reward: true
          Follow: true
+         GiftedSubscription: true
          Subscription: true
          Raid: true
      #Shows some more Informations in the log
@@ -51,9 +54,17 @@ Events:
              Reward: 'Wither'
              ChannelPoints: 20000
      Subscription: 'Creeper'
-     GiftedSubscription: 'Creeper'
+     #Up to the Amounts: -> 10 - 1,2,3,4...10 will be triggert as well.
+     #13-16 -> Only triggers 13,14,15,16
+     GiftedSubscription:
+         10: 'Creeper'
+         13-16: 'Heal'
+         30: 'Wither'
+     Raid:
+         10: 'Creeper'
+         13-16: 'Heal'
+         30: 'Wither'
      Follow: 'Heal'
-     Raid: 'Wither'
 
 Rewards:
      #Key = RewardName; Can Contain multiple Options.
@@ -155,8 +166,8 @@ Messages:
      rewardAnnouncing: '&6Viewer &f&l%username% &6used Reward &f%reward%&6.'
      followAnnouncing: '&6Viewer &f&l%username% &6has followed the Stream.'
      subscribedAnnouncing: '&6Viewer &f&l%username% &6is now subscribing with a &fTier %tier% &6Sub.'
-     subscriptionGiftAnnouncing: '&6Viewer &f&l%gifter% &6has gifted a &fTier %tier% &6Sub to &f&l%username%&6.'
-     raidAnnouncing: '&6Streamer &f&l%username% &6raided the Stream!'
+     subscriptionGiftAnnouncing: '&6Viewer &f&l%gifter% &6has gifted &f%amount% Tier %tier% &6Subs.'
+     raidAnnouncing: '&6Streamer &f&l%username% &6raided the Stream &7(&f%viewers% Viewers&7)&6!'
 
 #Do NOT touch
 ConfigVersion: 1

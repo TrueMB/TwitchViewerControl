@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.chat.events.channel.FollowEvent;
+import com.github.twitch4j.chat.events.channel.GiftSubscriptionsEvent;
 import com.github.twitch4j.chat.events.channel.RaidEvent;
 import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
 import com.github.twitch4j.common.events.domain.EventChannel;
@@ -46,6 +47,9 @@ public class TwitchListener{
 
 	}
 
+	/**
+	 * Triggers if somebody follows the Channel
+	 */
 	public void onFollow(FollowEvent e) {
 
 		EventUser user = e.getUser();
@@ -80,13 +84,18 @@ public class TwitchListener{
 		});
 	}
 
+	/**
+	 * Triggers if a Streamer got raided
+	 */
 	public void onRaid(RaidEvent e) {
 
 		EventUser user = e.getRaider();
 		EventChannel channel = e.getChannel();
 		String channelName = channel.getName();
+		int viewers = e.getViewers();
 		
-		TwitchReward twitchReward = this.instance.getTwitch().getReward(this.instance.manageFile().getString("Events.Raid"));
+		String rewardS = this.getRewardForSpecificAmount("Events.Raid", viewers);
+		TwitchReward twitchReward = this.instance.getTwitch().getReward(rewardS);
 		
 		if(twitchReward == null) {
 			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
@@ -100,7 +109,8 @@ public class TwitchListener{
 		if(this.instance.manageFile().getBoolean("Options.Announcing.Raid")) {
 			all.forEach(p -> p.sendMessage(this.instance.getMessage("raidAnnouncing")
 				.replaceAll("(?i)%" + "username" + "%", user.getName())
-				.replaceAll("(?i)%" + "channel" + "%", channelName))
+				.replaceAll("(?i)%" + "channel" + "%", channelName)
+				.replaceAll("(?i)%" + "viewers" + "%", String.valueOf(viewers)))
 			);
 		}
 		
@@ -114,15 +124,67 @@ public class TwitchListener{
 			}
 		});
 	}
+	
+	/**
+	 * Triggers once, if somebody gifts X amount Subscribers to the Streamer.
+	 * Only triggers the @onSub Method, if in Config Options.GiftedSubsCountAsSubs = true
+	 */
+	public void onSubGifted(GiftSubscriptionsEvent e) {
 
+		EventUser giftedBy = e.getUser();
+		EventChannel channel = e.getChannel();
+		String channelName = channel.getName();
+		
+		int giftedAmount = e.getTotalCount();
+		
+		String rewardS = this.getRewardForSpecificAmount("Events.GiftedSubscription", giftedAmount);
+		TwitchReward twitchReward = this.instance.getTwitch().getReward(rewardS);
+		
+		if(twitchReward == null) {
+			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
+				this.instance.getLogger().warning("Couldn't find the Reward for a Gifted Subscription in the Config/Cache.");
+			return;
+		}
+		
+		Collection<? extends Player> all = this.getTargetPlayers(channelName);
+		
+		//SEND ANNOUNCING IF NEEDED
+		if(this.instance.manageFile().getBoolean("Options.Announcing.GiftedSubscription")) {
+			all.forEach(p -> p.sendMessage(this.instance.getMessage("subscriptionGiftAnnouncing")
+				.replaceAll("(?i)%" + "channel" + "%", channelName)
+				.replaceAll("(?i)%" + "gifter" + "%", giftedBy.getName())
+				.replaceAll("(?i)%" + "tier" + "%", e.getSubscriptionPlan())
+				.replaceAll("(?i)%" + "amount" + "%", String.valueOf(e.getTotalCount()))
+				)
+			);
+		}
+		
+		//SEND REWARD TO PLAYERS
+		Bukkit.getScheduler().runTask(this.instance, new Runnable() {
+			
+			@Override
+			public void run() {
+				for(Player p : all)
+					twitchReward.send(p, giftedBy.getName());
+			}
+		});
+	}
+	
+	/**
+	 * Triggers if somebody subscribes or get one gifted (Options.GiftedSubsCountAsSubs = true)
+	 */
 	public void onSub(SubscriptionEvent e) {
 		
 		EventUser user = e.getUser();
 		EventUser giftedBy = e.getGiftedBy();
 		EventChannel channel = e.getChannel();
 		String channelName = channel.getName();
+		
+		//Gifted Subs should not trigger any events
+		if(e.getGifted() && !this.instance.manageFile().getBoolean("Options.GiftedSubsCountAsSubs"))
+			return;
 
-		TwitchReward twitchReward = this.instance.getTwitch().getReward(this.instance.manageFile().getString("Events." + (e.getGifted() ? "GiftedSubscription" : "Subscription")));
+		TwitchReward twitchReward = this.instance.getTwitch().getReward(this.instance.manageFile().getString("Events.Subscription"));
 		
 		if(twitchReward == null) {
 			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
@@ -156,6 +218,9 @@ public class TwitchListener{
 		});
 	}
 
+	/**
+	 * Triggers every time a User claims a reward that is also set up in the Config.
+	 */
 	public void onChannelPointsRedemption(ChannelPointsRedemptionEvent e) {
 		ChannelPointsRedemption redemption = e.getRedemption();
 		ChannelPointsReward reward = redemption.getReward();
@@ -202,6 +267,39 @@ public class TwitchListener{
 					twitchReward.send(p, user.getDisplayName());
 			}
 		});
+	}
+	
+	private String getRewardForSpecificAmount(String path, int amount) {
+		if(this.instance.manageFile().isConfigurationSection(path)) {
+			
+			String result = null;
+			int amountHit = 0;
+			for(String amountS : this.instance.manageFile().getConfigurationSection(path).getKeys(false)) {
+				if(amountS.contains("-")) {
+					String[] array = amountS.split("-");
+					if(array.length >= 2) {
+						int min = Integer.parseInt(array[0]);
+						int max = Integer.parseInt(array[1]);
+						
+						if(min <= amount && max >= amount && amountHit < max) {
+							amountHit = max;
+							result = this.instance.manageFile().getString(path + "." + amountS);
+						}
+					}
+				}else {
+					int value = Integer.parseInt(amountS);
+					if(value >= amount && amountHit < value) {
+						amountHit = value;
+						result = this.instance.manageFile().getString(path + "." + amountS);
+					}
+				}
+			}
+			return result;
+			
+		}else if(this.instance.manageFile().isSet(path))
+			return this.instance.manageFile().getString(path);
+		
+		return null;
 	}
 	
 	private Collection<? extends Player> getTargetPlayers(String channelName){
