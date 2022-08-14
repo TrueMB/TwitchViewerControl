@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>TwitchViewerControl</groupId>
   <artifactId>TwitchViewerControl</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <name>TwitchViewerControl</name>
   <description>Twitch Viewers can Control your Minecraft</description>
   
@@ -137,7 +137,7 @@
 	    <dependency>
 		    <groupId>com.jeff_media</groupId>
 			<artifactId>SpigotUpdateChecker</artifactId>
-			<version>2.1.1</version>
+			<version>3.0.0</version>
 	        <scope>compile</scope>
 	    </dependency>
 

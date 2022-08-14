@@ -170,4 +170,4 @@ Messages:
      raidAnnouncing: '&6Streamer &f&l%username% &6raided the Stream &7(&f%viewers% Viewers&7)&6!'
 
 #Do NOT touch
-ConfigVersion: 1
+ConfigVersion: 2
