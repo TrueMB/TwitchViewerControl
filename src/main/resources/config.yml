@@ -28,6 +28,7 @@ Options:
          GiftedSubscription: true
          Subscription: true
          Raid: true
+         Bits: true
      #Shows some more Informations in the log
      EnableDebug: false
 
@@ -64,6 +65,10 @@ Events:
          10: 'Creeper'
          13-16: 'Heal'
          30: 'Wither'
+     Bits:
+         20: 'Heal'
+         50: 'Creeper'
+         100: 'Wither'
      Follow: 'Heal'
 
 Rewards:
@@ -167,7 +172,8 @@ Messages:
      followAnnouncing: '&6Viewer &f&l%username% &6has followed the Stream.'
      subscribedAnnouncing: '&6Viewer &f&l%username% &6is now subscribing with a &fTier %tier% &6Sub.'
      subscriptionGiftAnnouncing: '&6Viewer &f&l%gifter% &6has gifted &f%amount% Tier %tier% &6Subs.'
+     bitsAnnouncing: '&6Viewer &f&l%username% &6has spend &f%bits% Bits!'
      raidAnnouncing: '&6Streamer &f&l%username% &6raided the Stream &7(&f%viewers% Viewers&7)&6!'
 
 #Do NOT touch
-ConfigVersion: 2
+ConfigVersion: 3

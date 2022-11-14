@@ -24,7 +24,7 @@ public class Main extends JavaPlugin {
 	private UTF8YamlConfiguration config;
 	private TwitchMain twitchMainInstance;
 	
-	private static final int configVersion = 2;
+	private static final int configVersion = 3;
     private static final String SPIGOT_RESOURCE_ID = "100882";
     private static final int BSTATS_PLUGIN_ID = 14642;
     

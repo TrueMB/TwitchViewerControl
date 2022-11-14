@@ -17,9 +17,11 @@ import com.github.twitch4j.common.events.domain.EventChannel;
 import com.github.twitch4j.common.events.domain.EventUser;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
+import com.github.twitch4j.pubsub.domain.ChannelBitsData;
 import com.github.twitch4j.pubsub.domain.ChannelPointsRedemption;
 import com.github.twitch4j.pubsub.domain.ChannelPointsReward;
 import com.github.twitch4j.pubsub.domain.ChannelPointsUser;
+import com.github.twitch4j.pubsub.events.ChannelBitsEvent;
 import com.github.twitch4j.pubsub.events.ChannelPointsRedemptionEvent;
 import com.google.common.collect.Lists;
 
@@ -265,6 +267,51 @@ public class TwitchListener{
 			public void run() {
 				for(Player p : all)
 					twitchReward.send(p, user.getDisplayName());
+			}
+		});
+	}
+	
+	/**
+	 * Triggers if somebody subscribes or get one gifted (Options.GiftedSubsCountAsSubs = true)
+	 */
+	public void onBits(ChannelBitsEvent e) {
+		
+		ChannelBitsData data = e.getData();
+		String username = data.getUserName();
+		String channelName = data.getChannelName();
+		
+		int bits = data.getBitsUsed();
+		int totalBits = data.getTotalBitsUsed();
+		
+		String rewardS = this.getRewardForSpecificAmount("Events.Bits", bits);
+		TwitchReward twitchReward = this.instance.getTwitch().getReward(rewardS);
+		
+		if(twitchReward == null) {
+			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
+				this.instance.getLogger().warning("Couldn't find the Reward for a Bits Reward in the Config/Cache.");
+			return;
+		}
+		
+		Collection<? extends Player> all = this.getTargetPlayers(channelName);
+		
+		//SEND ANNOUNCING IF NEEDED
+		if(this.instance.manageFile().getBoolean("Options.Announcing.Bits")) {
+			all.forEach(p -> p.sendMessage(this.instance.getMessage("bitsAnnouncing")
+				.replaceAll("(?i)%" + "username" + "%", username)
+				.replaceAll("(?i)%" + "channel" + "%", channelName)
+				.replaceAll("(?i)%" + "totalbits" + "%", String.valueOf(bits))
+				.replaceAll("(?i)%" + "bits" + "%", String.valueOf(totalBits))
+				)
+			);
+		}
+		
+		//SEND REWARD TO PLAYERS
+		Bukkit.getScheduler().runTask(this.instance, new Runnable() {
+			
+			@Override
+			public void run() {
+				for(Player p : all)
+					twitchReward.send(p, username);
 			}
 		});
 	}
