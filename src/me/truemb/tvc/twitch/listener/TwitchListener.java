@@ -201,10 +201,9 @@ public class TwitchListener{
 			all.forEach(p -> p.sendMessage(this.instance.getMessage((e.getGifted() ? "subscriptionGift" : "subscribed") + "Announcing")
 				.replaceAll("(?i)%" + "username" + "%", user.getName())
 				.replaceAll("(?i)%" + "channel" + "%", channelName)
-				.replaceAll("(?i)%" + "gifter" + "%", giftedBy.getName())
+				.replaceAll("(?i)%" + "gifter" + "%", giftedBy != null ? giftedBy.getName() : "-")
 				.replaceAll("(?i)%" + "tier" + "%", e.getSubscriptionPlan())
 				.replaceAll("(?i)%" + "month" + "%", String.valueOf(e.getMonths()))
-				.replaceAll("(?i)%" + "monthcombo" + "%", String.valueOf(e.getMultiMonthDuration()))
 				)
 			);
 		}

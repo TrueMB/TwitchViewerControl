@@ -42,11 +42,11 @@
               <relocations>
                 <relocation>
                   <pattern>com.jeff_media.updatechecker</pattern>
-                  <shadedPattern>me.truemb.discordnotify.updater</shadedPattern>
+                  <shadedPattern>me.truemb.tvc.updater</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.bstats</pattern>
-                  <shadedPattern>me.truemb.discordnotify.bstats</shadedPattern>
+                  <shadedPattern>me.truemb.tvc.bstats</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
