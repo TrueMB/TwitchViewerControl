@@ -1,8 +1,10 @@
-name: ${project.name}
+name: ${name}
 author: TrueMB
-version: ${project.version}
+version: ${version}
 api-version: 1.16
 main: me.truemb.tvc.main.Main
+
+softdepend: [MythicMobs]
 
 commands:
    twitchviewercontrol:

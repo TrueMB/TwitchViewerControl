@@ -15,6 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import me.truemb.tvc.entities.BukkitEntityInstance;
+import me.truemb.tvc.entities.EntityInstance;
+import me.truemb.tvc.entities.MythicMobsEntityInstance;
 import me.truemb.tvc.main.Main;
 import me.truemb.tvc.utils.UTF8YamlConfiguration;
 
@@ -82,8 +85,32 @@ public class TwitchReward {
 					String displayName = config.isSet("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName") ? plugin.translateHexColorCodes(config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".displayName")) : null;
 					boolean exactLocation = config.getBoolean("Rewards." + rewardKey + "." + function + "." + entityPath + ".exactLocation");
 					
-					this.entities.add(new EntityInstance(type, amount, displayName, exactLocation));
+					this.entities.add(new BukkitEntityInstance(type, amount, displayName, exactLocation));
 				});
+			
+			//CACHE THE SPAWN OF MYTHIC MOBS
+			}else if(function.equalsIgnoreCase("spawnMythicMob")) {
+
+		        if(plugin.getServer().getPluginManager().getPlugin("MythicMobs") != null) {
+					config.getConfigurationSection("Rewards." + rewardKey + "." + function).getKeys(false).forEach(entityPath -> {
+						
+						String mmname = config.getString("Rewards." + rewardKey + "." + function + "." + entityPath + ".mythicmob").toUpperCase();
+						int amount = config.getInt("Rewards." + rewardKey + "." + function + "." + entityPath + ".amount");
+						boolean exactLocation = config.getBoolean("Rewards." + rewardKey + "." + function + "." + entityPath + ".exactLocation");
+						
+						io.lumine.mythic.api.mobs.MythicMob mob = io.lumine.mythic.bukkit.MythicBukkit.inst().getMobManager().getMythicMob(mmname).orElse(null);
+				        if(mob == null) {
+							if(plugin.manageFile().getBoolean("Options.EnableDebug")) {
+								plugin.getLogger().warning("Couldn't find the Mythic Mob: '" + mmname + "'.");
+							}
+				        }else {
+							this.entities.add(new MythicMobsEntityInstance(mob, amount, exactLocation));
+				        }
+				        
+					});
+		        }else {
+					plugin.getLogger().warning("Couldn't find the plugin Mythic Mobs for function: spawnMythicMob. If you want to use it, install MythicMobs");
+		        }
 			
 			//CACHE ALL COMMANDS
 			}else if(function.equalsIgnoreCase("commands")) {

@@ -137,7 +137,7 @@ public class TwitchListener{
 		EventChannel channel = e.getChannel();
 		String channelName = channel.getName();
 		
-		int giftedAmount = e.getTotalCount();
+		int giftedAmount = e.getCount();
 		
 		String rewardS = this.getRewardForSpecificAmount("Events.GiftedSubscription", giftedAmount);
 		TwitchReward twitchReward = this.instance.getTwitch().getReward(rewardS);
@@ -156,7 +156,8 @@ public class TwitchListener{
 				.replaceAll("(?i)%" + "channel" + "%", channelName)
 				.replaceAll("(?i)%" + "gifter" + "%", giftedBy.getName())
 				.replaceAll("(?i)%" + "tier" + "%", e.getSubscriptionPlan())
-				.replaceAll("(?i)%" + "amount" + "%", String.valueOf(e.getTotalCount()))
+				.replaceAll("(?i)%" + "amount" + "%", String.valueOf(giftedAmount))
+				.replaceAll("(?i)%" + "totalamount" + "%", String.valueOf(e.getTotalCount()))
 				)
 			);
 		}
@@ -198,7 +199,7 @@ public class TwitchListener{
 		
 		//SEND ANNOUNCING IF NEEDED
 		if(this.instance.manageFile().getBoolean("Options.Announcing.Subscription")) {
-			all.forEach(p -> p.sendMessage(this.instance.getMessage((e.getGifted() ? "subscriptionGift" : "subscribed") + "Announcing")
+			all.forEach(p -> p.sendMessage(this.instance.getMessage((e.getGifted() ? "subscribed" : "subscribed") + "Announcing") //deactivating "subscriptionGift"
 				.replaceAll("(?i)%" + "username" + "%", user.getName())
 				.replaceAll("(?i)%" + "channel" + "%", channelName)
 				.replaceAll("(?i)%" + "gifter" + "%", giftedBy != null ? giftedBy.getName() : "-")

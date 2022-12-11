@@ -6,12 +6,14 @@ import com.github.twitch4j.TwitchClientPool;
 import com.github.twitch4j.TwitchClientPoolBuilder;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.chat.events.channel.FollowEvent;
+import com.github.twitch4j.chat.events.channel.GiftSubscriptionsEvent;
 import com.github.twitch4j.chat.events.channel.RaidEvent;
 import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
 import com.github.twitch4j.helix.domain.User;
 import com.github.twitch4j.helix.domain.UserList;
+import com.github.twitch4j.pubsub.events.ChannelBitsEvent;
 import com.github.twitch4j.pubsub.events.ChannelPointsRedemptionEvent;
 import com.google.common.collect.Lists;
 
@@ -73,6 +75,8 @@ public class TwitchChannel {
 		client.getEventManager().onEvent(ChannelGoLiveEvent.class, event -> listener.onLiveStream(event));
 		client.getEventManager().onEvent(ChannelGoOfflineEvent.class, event -> listener.onOfflineStream(event));
 		client.getEventManager().onEvent(SubscriptionEvent.class, event -> listener.onSub(event));
+		client.getEventManager().onEvent(GiftSubscriptionsEvent.class, event -> listener.onSubGifted(event));
+		client.getEventManager().onEvent(ChannelBitsEvent.class, event -> listener.onBits(event));
 		
 		client.getEventManager().onEvent(ChannelMessageEvent.class, event -> listener.onChat(event));
 		

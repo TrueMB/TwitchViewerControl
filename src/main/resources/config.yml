@@ -156,6 +156,12 @@ Rewards:
                  duration: 300
                  amplifier: 0
          feed: true
+     'MythicMob':
+         spawnMythicMob: 
+             1:
+                 mythicmob: 'SkeletalKnight'
+                 amount: 1
+                 exactLocation: true
 
 Permissions:
      adminCommand: 'tvc.admin'
@@ -176,4 +182,4 @@ Messages:
      raidAnnouncing: '&6Streamer &f&l%username% &6raided the Stream &7(&f%viewers% Viewers&7)&6!'
 
 #Do NOT touch
-ConfigVersion: 3
+ConfigVersion: 4

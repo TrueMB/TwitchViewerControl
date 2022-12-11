@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>TwitchViewerControl</groupId>
   <artifactId>TwitchViewerControl</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   <name>TwitchViewerControl</name>
   <description>Twitch Viewers can Control your Minecraft</description>
   
@@ -81,7 +81,6 @@
 		</pluginRepository>
 	</pluginRepositories>
 	
-	
 	<repositories>
 		
 		<!-- SPIGOT MC -->
@@ -95,6 +94,13 @@
 	        <id>jeff-media-gbr</id>
 	        <url>https://repo.jeff-media.de/maven2/</url>
 	    </repository>
+
+		<!-- MYTHIC MOBS -->
+		<repository>
+		    <id>nexus</id>
+		    <name>Lumine Releases</name>
+		    <url>https://mvn.lumine.io/repository/maven-public/</url>
+		</repository>
 
 		<!-- GitHub -->
 		<repository>
@@ -121,7 +127,7 @@
 		<dependency>
            <groupId>org.spigotmc</groupId>
            <artifactId>spigot-api</artifactId>
-           <version>1.18.2-R0.1-SNAPSHOT</version>
+           <version>1.16.4-R0.1-SNAPSHOT</version>
            <scope>provided</scope>
 		</dependency>
 
@@ -157,19 +163,27 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.13.1</version>
+			<version>2.14.1</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.13.1</version>
+			<version>2.14.1</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.13.1</version>
+			<version>2.14.1</version>
+		</dependency>
+		
+		<!-- MYTHIC MOBS -->
+		<dependency>
+		    <groupId>io.lumine</groupId>
+		    <artifactId>Mythic-Dist</artifactId>
+		    <version>5.2.0</version>  
+		    <scope>provided</scope>
 		</dependency>
 
 	</dependencies>
