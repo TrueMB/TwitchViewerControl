@@ -72,11 +72,22 @@ tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
 }
 
+tasks.withType(Copy).all { 
+	duplicatesStrategy 'exclude' 
+}
+tasks.withType(Jar).all { 
+	duplicatesStrategy 'exclude' 
+}
+
 jar {
     from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    manifest {
-        attributes "Main-Class": "me.truemb.tvc.main.Main"
+        configurations.compileClasspath.findAll { file ->
+            //project.logger.lifecycle("File: ${file.name}")
+	        file.name != "spigot-api-1.16.4-R0.1-SNAPSHOT.jar"
+	        file.name != "Mythic-Dist-5.2.0.jar"
+    	}.sort { it.name }
+            .collect { file ->
+                file.isDirectory() ? file : zipTree(file)
+            }
     }
 }
