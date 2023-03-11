@@ -7,6 +7,9 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    
+    id 'net.minecrell.plugin-yml.bukkit' version '0.5.2'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 repositories {
@@ -33,15 +36,16 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.bstats:bstats-bukkit:2.2.1'
-    implementation 'com.jeff_media:SpigotUpdateChecker:3.0.0'
-    implementation 'com.github.twitch4j:twitch4j:1.12.0'
-    implementation 'com.github.philippheuer.events4j:events4j-handler-reactor:0.9.8'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.1'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
-    api 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
-    api 'io.lumine:Mythic-Dist:5.2.0'
+    api 'org.bstats:bstats-bukkit:3.0.0'
+    api 'com.jeff_media:SpigotUpdateChecker:3.0.2'
+    api 'com.github.twitch4j:twitch4j:1.12.0'
+    api 'com.github.philippheuer.events4j:events4j-handler-reactor:0.9.8'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+    api 'com.fasterxml.jackson.core:jackson-core:2.14.1'
+    api 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
+    
+    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    compileOnly 'io.lumine:Mythic-Dist:5.2.0'
 }
 
 group = 'TwitchViewerControl'
@@ -79,15 +83,17 @@ tasks.withType(Jar).all {
 	duplicatesStrategy 'exclude' 
 }
 
-jar {
-    from {
-        configurations.compileClasspath.findAll { file ->
-            //project.logger.lifecycle("File: ${file.name}")
-	        file.name != "spigot-api-1.16.4-R0.1-SNAPSHOT.jar"
-	        file.name != "Mythic-Dist-5.2.0.jar"
-    	}.sort { it.name }
-            .collect { file ->
-                file.isDirectory() ? file : zipTree(file)
-            }
-    }
+bukkit {
+    name = "${project.name}"
+    version = "${project.version}"
+    description = 'Twitch Viewer can control your Minecraft'
+    
+    website = 'https://github.com/TrueMB/TwitchViewerControl'
+    author = 'TrueMB'
+    main = 'me.truemb.tvc.main.Main'
+    
+    apiVersion = '1.16'
+    
+    softDepend = ['MythicMobs']
 }
+
