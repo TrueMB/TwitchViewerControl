@@ -51,7 +51,7 @@ dependencies {
 group = 'TwitchViewerControl'
 version = '0.0.4'
 description = 'TwitchViewerControl'
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_16
 
 sourceSets {
     main { 
