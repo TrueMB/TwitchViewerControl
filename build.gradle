@@ -8,7 +8,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     
-    id 'net.minecrell.plugin-yml.bukkit' version '0.5.2'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.6.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
@@ -38,11 +38,11 @@ repositories {
 dependencies {
     api 'org.bstats:bstats-bukkit:3.0.0'
     api 'com.jeff_media:SpigotUpdateChecker:3.0.2'
-    api 'com.github.twitch4j:twitch4j:1.16.0'
-    api 'com.github.philippheuer.events4j:events4j-handler-reactor:0.12.1'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
-    api 'com.fasterxml.jackson.core:jackson-core:2.15.2'
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    library 'com.github.twitch4j:twitch4j:1.16.0'
+    library 'com.github.philippheuer.events4j:events4j-handler-reactor:0.12.1'
+    library 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    library 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    library 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
     
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'io.lumine:Mythic-Dist:5.2.0'
@@ -84,8 +84,8 @@ tasks.withType(Jar).all {
 }
 
 bukkit {
-    name = "${project.name}"
-    version = "${project.version}"
+    name = rootProject.name
+    version = rootProject.version
     description = 'Twitch Viewer can control your Minecraft'
     
     website = 'https://github.com/TrueMB/TwitchViewerControl'
@@ -95,5 +95,16 @@ bukkit {
     apiVersion = '1.16'
     
     softDepend = ['MythicMobs']
+    
+    commands {
+        twitchviewercontrol {
+            description = 'Plugin management Command'
+            aliases = ['tvc']
+        }
+    }
 }
 
+shadowJar {
+  relocate 'com.jeff_media.updatechecker', 'me.truemb.tvc.updater'
+  relocate 'org.bstats', 'me.truemb.tvc.bstats'
+}

@@ -148,6 +148,13 @@ public class TwitchListener{
 			return;
 		}
 		
+		if(this.instance.manageFile().getBoolean("Options.EnableDebug")) {
+			this.instance.getLogger().info("------- GiftedSubs ------");
+			this.instance.getLogger().info("Gifted by: " + giftedBy.getName());
+			this.instance.getLogger().info("Tier: " + e.getSubscriptionPlan());
+			this.instance.getLogger().info("Amount: " + String.valueOf(giftedAmount));
+		}
+		
 		Collection<? extends Player> all = this.getTargetPlayers(channelName);
 		
 		//SEND ANNOUNCING IF NEEDED

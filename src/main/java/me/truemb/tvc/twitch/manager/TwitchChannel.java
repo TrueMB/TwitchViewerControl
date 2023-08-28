@@ -53,6 +53,7 @@ public class TwitchChannel {
 			    .withEnableChat(true)
 			    .withEnableHelix(true)
 				.withEnablePubSub(true)
+				.withDefaultAuthToken(credentials)
 			    .withDefaultEventHandler(ReactorEventHandler.class)
 			    .build();
 
