@@ -38,18 +38,18 @@ repositories {
 dependencies {
     api 'org.bstats:bstats-bukkit:3.0.0'
     api 'com.jeff_media:SpigotUpdateChecker:3.0.2'
-    api 'com.github.twitch4j:twitch4j:1.12.0'
-    api 'com.github.philippheuer.events4j:events4j-handler-reactor:0.9.8'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
-    api 'com.fasterxml.jackson.core:jackson-core:2.14.1'
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
+    api 'com.github.twitch4j:twitch4j:1.16.0'
+    api 'com.github.philippheuer.events4j:events4j-handler-reactor:0.12.1'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    api 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    api 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
     
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'io.lumine:Mythic-Dist:5.2.0'
 }
 
 group = 'TwitchViewerControl'
-version = '0.0.4'
+version = '0.0.5'
 description = 'TwitchViewerControl'
 java.sourceCompatibility = JavaVersion.VERSION_17
 
