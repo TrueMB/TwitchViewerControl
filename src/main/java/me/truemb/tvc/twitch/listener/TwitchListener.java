@@ -141,18 +141,20 @@ public class TwitchListener{
 		
 		String rewardS = this.getRewardForSpecificAmount("Events.GiftedSubscription", giftedAmount);
 		TwitchReward twitchReward = this.instance.getTwitch().getReward(rewardS);
-		
-		if(twitchReward == null) {
-			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
-				this.instance.getLogger().warning("Couldn't find the Reward for a Gifted Subscription in the Config/Cache.");
-			return;
-		}
-		
+
+		/*
 		if(this.instance.manageFile().getBoolean("Options.EnableDebug")) {
 			this.instance.getLogger().info("------- GiftedSubs ------");
 			this.instance.getLogger().info("Gifted by: " + giftedBy.getName());
 			this.instance.getLogger().info("Tier: " + e.getSubscriptionPlan());
 			this.instance.getLogger().info("Amount: " + String.valueOf(giftedAmount));
+		}
+		*/
+		
+		if(twitchReward == null) {
+			if(this.instance.manageFile().getBoolean("Options.EnableDebug"))
+				this.instance.getLogger().warning("Couldn't find the Reward for a Gifted Subscription in the Config/Cache.");
+			return;
 		}
 		
 		Collection<? extends Player> all = this.getTargetPlayers(channelName);
@@ -342,7 +344,12 @@ public class TwitchListener{
 					}
 				}else {
 					int value = Integer.parseInt(amountS);
-					if(value >= amount && amountHit < value) {
+					
+					//value = 30 / 10
+					//amount = 9
+					//amountHit = 10
+					
+					if(value >= amount && amountHit > value) {
 						amountHit = value;
 						result = this.instance.manageFile().getString(path + "." + amountS);
 					}
